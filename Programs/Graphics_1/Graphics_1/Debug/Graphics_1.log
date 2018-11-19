@@ -1,0 +1,6 @@
+﻿  A_star.cpp
+d:\fall 18\engineering computation\teamproject\programs\graphics_1\graphics_1\a_star.cpp(115): warning C4018: '<': signed/unsigned mismatch
+d:\fall 18\engineering computation\teamproject\programs\graphics_1\graphics_1\a_star.cpp(192): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\fall 18\engineering computation\teamproject\programs\graphics_1\graphics_1\a_star.cpp(231): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\fall 18\engineering computation\teamproject\programs\graphics_1\graphics_1\a_star.cpp(242): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Graphics_1.vcxproj -> D:\Fall 18\Engineering Computation\TeamProject\Programs\Graphics_1\Debug\Graphics_1.exe
