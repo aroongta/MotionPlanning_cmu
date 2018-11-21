@@ -135,8 +135,10 @@ void Robot::dispMenu(int x, int y, int width, int height)
             isMoving = true;
             cout << "animate robot has been clicked!";
         }
-        if(mouseEvent == FSMOUSEEVENT_LBUTTONUP)
-            isMoving = false;
+        if(mouseEvent == FSMOUSEEVENT_LBUTTONUP) {
+            // isMoving = false;
+            // implementation here
+        }
     }
 }
 
@@ -148,10 +150,23 @@ void Robot::displayText(const string message, int x, int y)
     YsGlDrawFontBitmap8x8(message.c_str());
 }
 
-// animates motion
-void Robot::animateRobot()
+// generates a smoother path for the robot to follow during animation by interpolation
+void Robot::interpolatePath(vector<double> xPathCoords, vector<double> yPathCoords)
 {
+    // copy and reverse coordinates (since path coords contain end to start)
+    vector<double> reverseXPathCoords (xPathCoords.rbegin(), xPathCoords.rend());
+    vector<double> reverseYPathCoords (yPathCoords.rbegin(), yPathCoords.rend());
+    vector<double> animateXCoords;
+    vector<double> animateYCoords;
+    
+    // to be filled in, add in interpolated path by generating points
+    // between the reversePathCoords, and then track where the robot is during
+    // animation via the "currAnimatedX" and "currAnimatedY" points
+    
+    /*
     if (isMoving) {
         // implement something
+        }
     }
+     */
 }

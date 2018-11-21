@@ -15,6 +15,7 @@
 #include <string>
 #include "ysglfontdata.h"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -30,6 +31,8 @@ public:
     double theta; // angle of rotor blades
     void dispMenu(int locX, int locY, int width, int height);
     void displayText(const string message, int width, int height); // displays text on screen
-    void animateRobot();
+    void interpolatePath(vector<double> xCoords, vector<double> yCoords);
+    int currAnimatedX; // current location for animation
+    int currAnimatedY;
 };
 #endif /* robotAnimation_h */

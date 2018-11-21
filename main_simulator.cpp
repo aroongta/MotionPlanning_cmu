@@ -9,8 +9,8 @@
 #include <vector> // vector to store coordinates
 #include "math.h"
 #include <list> // lists for searching through open list and closed list
-#include <GLUT/glut.h> // GLUT library for drop down menu
-#include "robotAnimation.h"
+#include <GLUT/glut.h> // GLUT library for drop down menu (unused)
+#include "robotAnimation.h" // library for quadcopter animation
 
 
 using namespace std;
@@ -31,8 +31,7 @@ struct node
 class Graphics
 {
 private:
-    vector<double> pathCoordsX;    //list of x coordinates for the optimal path
-    vector<double> pathCoordsY;    //list of y coordinates for the optimal path
+    // removed vector of pathCoords, placed into public (for implementing animation)
 public:
     Graphics(int winX, int winY); // constructor
     void Draw_Circle(double cx, double cy, int rad); // draws circles
@@ -41,22 +40,26 @@ public:
     void setPath(double x, double y); // fills path coordinates in the member variable
     void Draw_Path(); // draws path
     void Draw_Path(node* end); // draws path based on node's coordinates
-    void Draw_StartEnd(); // animates start and end points
-    void Set_StartEnd(int winX, int winY); // allows user to set start and end points
+    void Draw_StartEndObs(); // animates start and end points, obstacles if any
+    void Set_StartEndObs(int winX, int winY); // allows user to set start and end points, obstacles if any
     
     node* nodes = nullptr; // array of all nodes
     node* start = nullptr; // starting point
     node* end = nullptr; // desired destination
     
-    int coords_Convert(int cX, int cY,int gridSize, int nX); //To convert the coordinates to array indices
+    int coords_Convert(int cX, int cY,int gridSize, int nX); // to convert the coordinates to array indices
     double heuristic(node* first, node* second); // heuristic function
     bool computeAStar(int winX, int winY); // run a-star algorithm
+    
+    vector<double> pathCoordsX;    //list of x coordinates for the optimal path
+    vector<double> pathCoordsY;    //list of y coordinates for the optimal path
 };
-//To convert the coordinates to array indices
+// to convert the coordinates to array indices
 int Graphics::coords_Convert(int cX, int cY, int gridSize, int nX)
 {
     return (nX * int(cX / gridSize) + int(cY / gridSize));
 }
+
 // draws circles at each specified position
 void Graphics::Draw_Circle(double cx, double cy, int rad=2)
 {
@@ -105,7 +108,7 @@ void Graphics::Draw_GridLines(int winX,int winY)
     glEnd();
 }
 
-// stores coordinates of computed path in the member variable
+// stores coordinates of computed path in the member variables
 void Graphics::setPath(double x, double y)
 {
     pathCoordsX.push_back(x);
@@ -126,18 +129,20 @@ void Graphics::Draw_Path()
     glEnd();
 }
 
+// constructor of graphics object to initialize nodes
 Graphics::Graphics(int winX, int winY)
 {
-    int gridSize = 20;    //size of the grid-cells
+    int gridSize = 20; //size of the grid-cells
     int nX = winX / gridSize, nY = winY / gridSize;
-    cout << nX * nY << '\n';
+    // cout << nX * nY << '\n'; // DEBUG
     int it = 0; // iterator
     nodes = new node[nX*nY]; // 500 / 20
+    
     // initialize nodes
     for (int x=10; x<=winX-10; x+=20) {
         for (int y=10; y<=winY-10; y+=20) {
-            nodes[int(x/20)*20 + int(y/20)].x = x;
             it = coords_Convert(x, y, gridSize, nX);
+            nodes[it].x = x;
             // cout << it<< "\t"; // DEBUG
             nodes[it].y = y;
             nodes[it].isObstacle = false;
@@ -151,22 +156,22 @@ Graphics::Graphics(int winX, int winY)
         for (int y=10; y <= winY-10; y+=20)
         {
             it = coords_Convert(x, y, gridSize, nX);
-            if(y>=30) {// so you don't look past top row of nodes
-                nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x,y-gridSize,gridSize,nX)]); // N
+            if(y>=30) { // so you don't look past top row of nodes
+                nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x,y-gridSize,gridSize,nX)]); // north neighbors
             }
             if(y<=winY-30) {
-                nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x,y+gridSize,gridSize,nX)]); // S
+                nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x,y+gridSize,gridSize,nX)]); // south neighbors
             }
             if(x>=30) {
-                nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x-gridSize,y,gridSize,nX)]); // W
+                nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x-gridSize,y,gridSize,nX)]); // west neighbors
             }
             if(x<=winX-30) {
-                nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x+gridSize,y,gridSize,nX)]); // E
+                nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x+gridSize,y,gridSize,nX)]); // east neighbors
             }
         }
     }
     
-    // manually set start and end nodes as a precaution
+    // manually set start and end nodes for safety
     start = &nodes[3];
     end = &nodes[33];
     cout << "w1.start's position: " << nodes[3].x << " " << nodes[3].y << endl; // DEBUG
@@ -179,7 +184,7 @@ double Graphics::heuristic(node* first, node* second)
     return distance; // euclidean distance, but change to manhattan distance if needed
 }
 
-// runs a star search algorithm
+// runs a star search algorithm and create links between start and end point with shortest path
 bool Graphics::computeAStar(int winX, int winY)
 {
     int gridSize = 20; //size of the grid-cells
@@ -203,46 +208,36 @@ bool Graphics::computeAStar(int winX, int winY)
     start->gMovementCost = 0.0; // f(n) is initialized to 0
     start->fCost = heuristic(start, end);
     
-    // add start node to open list - this will ensure it gets tested
-    // as the algorithm progresses, newly discovered nodes get added to this
-    // list, and will themselves be tested later
+    // add start node to open list -> includes nodes to be tested
+    // (newly discovered nodes get added to this list)
     list<node*> openList;
     openList.push_back(start);
     
-    // if the not tested list contains nodes, there may be better paths
-    // which have not yet been explored
-    // however, we will also stop searching when we reach the target
-    
-    while (!openList.empty() && current != end)// Find absolutely shortest path // && nodeCurrent != nodeEnd)
+    // if open list contains nodes, keep exploring for optimal path
+    // however, stop searching when we reach the target
+    while (!openList.empty() && current != end)
     {
-        // sort nodes in open list by global goal in ascending order
+        // sort nodes in open list by global goal/fCost in ascending order
         openList.sort([](const node* lhs, const node* rhs){ return lhs->fCost < rhs->fCost; } );
         // printf("entered loop\n"); // DEBUG
-        // front of openList is potentially the lowest distance node (after sorting); our
+        
+        // front of openList is potentially the lowest distance node (after sorting), but
         // list may also contain nodes that have already been visited, so remove these
         while (openList.front()->isVisited && !openList.empty()) {
             // cout << "openList.front() has already been visited, popping off\n"; // DEBUG
             openList.pop_front(); // remove it
         }
         
-        // if no valid nodes left to test
-        if (openList.empty()) {
-            printf("openList empty, breaking out\n");
+        if (current == end) { // if you have reached end node, just break out
+            cout << "current is end...\n"; // DEBUG
             break;
         }
         
-        if (current == end) {
-            cout << "current is end... not breaking out?\n";
-            break;
-        }
-        
-        // continue search
-        current = openList.front(); // remove nodes that have already been visited
-        current->isVisited = true; // this node has now been visited, put in closed list
+        // else, continue search
+        current = openList.front(); // look at front of sorted list
+        current->isVisited = true; // this node has now been visited, so put in closed list/pop off
         openList.pop_front();
         
-        // current = openList.front(); // set current node to front of list in frontier
-    
         // check each of this node's neighbors (in the closed list)
         for (auto nodeNeighbor:current->vecNeighbors) {
             // only if the neighbour is not visited and is not an obstacle, add it to open list to test later
@@ -253,30 +248,28 @@ bool Graphics::computeAStar(int winX, int winY)
             float possiblyLower = current->gMovementCost + heuristic(current, nodeNeighbor);
             
             // if choosing path through this node is lower distance than current neighbor's,
-            // update the neighbor to use this node as the source/origin, and set its distance scores as necessary
+            // update the neighbor to use this node as the source/origin, and set distance scores as necessary
             if (possiblyLower < nodeNeighbor->gMovementCost)
             {
-                // cout << "is parent being set?\n"; // DEBUG
-                nodeNeighbor->parent = current;
-                nodeNeighbor->gMovementCost = possiblyLower;
+                nodeNeighbor->parent = current; // set new parent
+                nodeNeighbor->gMovementCost = possiblyLower; // update local g cost
             
                 // update the neighbour's score since best path length to the neighbor being tested has changed
                 nodeNeighbor->fCost = nodeNeighbor->gMovementCost + heuristic(nodeNeighbor, end); // f(n) = g(n) + h(n)
             }
         }
     }
-    return true;
+    return true; // end of a-star search
 }
 
 // draws computed path by tracing back to the start point from end point via parents
 void Graphics::Draw_Path(node *end)
 {
-    if (end != nullptr) // just for safety
+    if (end != nullptr)
     {
         node *p = end; // starting point of "back-propagated path"
         while (p != nullptr) // begin tracing back via parents
         {
-            // cout << "p's parent is not nullptr\n"; // DEBUG
             setPath(p->x, p->y);
             // cout << "Stored path, p->x and p->y:" << p->x << " and " << p->y << endl; // DEBUG
             p = p->parent; // set next node to this node's parent (trace back)
@@ -285,9 +278,14 @@ void Graphics::Draw_Path(node *end)
     Draw_Path(); // draws path that is stored from setPath (in pathCoords)
 }
 
-void Graphics::Draw_StartEnd() // draws start and end points
+// added Draw_StartEndObs() to animate squares with starting point (key S), end point (key E),
+// and obstacles (key O)
+void Graphics::Draw_StartEndObs() // draws start and end points, obstacles if any
 {
-    int gridSize = 20;
+    int gridSize = 20, winX = 500, winY = 500;
+    int it; // iterator
+    
+    // draw starting square
     if (start != nullptr) {
         glBegin(GL_QUADS);
         glColor3ub(0, 50, 255); // start goal is blue!
@@ -299,6 +297,8 @@ void Graphics::Draw_StartEnd() // draws start and end points
         glVertex2i(x-gridSize/2, y+gridSize/2);
         glEnd();
     }
+    
+    // ending square
     if (end != nullptr) {
         glBegin(GL_QUADS);
         glColor3ub(255, 50, 0); // end goal is red!
@@ -310,10 +310,26 @@ void Graphics::Draw_StartEnd() // draws start and end points
         glVertex2i(xEnd-gridSize/2, yEnd+gridSize/2);
         glEnd();
     }
+    
+    // draw obstacles, if any
+    for(int i=10; i<=winX-10; i+=20) {
+        for(int j=10; j<=winY-10; j+=20) {
+            it = coords_Convert(i, j, gridSize, winX/gridSize);
+            if (nodes[it].isObstacle) {
+                glBegin(GL_QUADS);
+                glColor3ub(80,80,80); // obstacles are grey
+                glVertex2i(i-gridSize/2, j-gridSize/2);
+                glVertex2i(i+gridSize/2, j-gridSize/2);
+                glVertex2i(i+gridSize/2, j+gridSize/2);
+                glVertex2i(i-gridSize/2, j+gridSize/2);
+                glEnd();
+            }
+        }
+    }
 }
 
-// allows user to set start and end points manually
-void Graphics::Set_StartEnd(int winX, int winY)
+// added Set_StartEndObs(), allows user to set start and end points manually
+void Graphics::Set_StartEndObs(int winX, int winY)
 {
     // clear computed path coordinates
     while (!pathCoordsX.empty()) {
@@ -330,18 +346,21 @@ void Graphics::Set_StartEnd(int winX, int winY)
     mouseEvent = FsGetMouseEvent(leftButton, middleButton, rightButton, locX, locY);
     
     if ((10 <= locX && locX <= winX-10) && (10 <= locY && locY <= winY-10)) {
-        // 139 % 20 = 19, 139-19 = 120 + 10 = 130
-        selectedNodeX = locX - (locX % 20) - 10;
+        selectedNodeX = locX - (locX % 20) + 10;
         selectedNodeY = locY - (locY % 20) + 10;
         
-        // set start and end locs
+        // set start and end locs & obstacles
         if(key == FSKEY_S)
             start = &nodes[coords_Convert(selectedNodeX, selectedNodeY, gridSize, winX/gridSize)];
         if(key == FSKEY_E)
             end = &nodes[coords_Convert(selectedNodeX, selectedNodeY, gridSize, winX/gridSize)];
+        if(key == FSKEY_O) {
+            nodes[coords_Convert(selectedNodeX, selectedNodeY, gridSize, winX/gridSize)].isObstacle = !nodes[coords_Convert(selectedNodeX, selectedNodeY, gridSize, winX/gridSize)].isObstacle;
+        }
     }
 }
 
+// run the main program
 int main(void)
 {
     int winX = 500, winY = 500;
@@ -366,12 +385,13 @@ int main(void)
         w1.Draw_GridLines(winX,winY);
         w1.Draw_Nodes(winX, winY);
         // w1.Draw_Path();
-        w1.Draw_StartEnd();
+        w1.Set_StartEndObs(winX, winY); // allows user to manually set start and end nodes
+        w1.Draw_StartEndObs(); // draw start points, end points, obstacles
         w1.computeAStar(winX, winY); // compute a-star search for path
-        w1.Set_StartEnd(winX, winY); // allows user to manually set start and end nodes
-        w1.Draw_Path(w1.end);
-        quadCopter.drawRobot(w1.start->x, w1.start->y);
-        quadCopter.dispMenu(600, 100, 120, 20);
+        w1.Draw_Path(w1.end); // highlight the shortest path
+        quadCopter.drawRobot(w1.start->x, w1.start->y); // draw robot at starting point
+        quadCopter.dispMenu(600, 100, 120, 20); // display animation button
+        quadCopter.interpolatePath(w1.pathCoordsX, w1.pathCoordsY); // interpolate path for animation (needs implementation)
         FsSwapBuffers(); // if double buffer
         FsSleep(25);
     }
