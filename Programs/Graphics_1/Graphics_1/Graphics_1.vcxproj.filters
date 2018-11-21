@@ -24,6 +24,9 @@
     <ClInclude Include="ysglfontdata.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="robotAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -35,7 +38,10 @@
     <ClCompile Include="ysglfontdata.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="A_star.cpp">
+    <ClCompile Include="robotAnimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main_simulator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
