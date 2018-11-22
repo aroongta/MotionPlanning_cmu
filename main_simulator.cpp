@@ -1,3 +1,4 @@
+//Bryans
 #define MAXWIDTH 800
 #define MAXHEIGHT 600
 

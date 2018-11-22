@@ -87,12 +87,12 @@ Graphics::Graphics(int winX, int winY)
 	int nX = winX / gridSize, nY = winY / gridSize;
 	cout << nX * nY << '\n';
 	int it = 0; // iterator
-	//nodes = new node[nX*nY]; // 500 / 20
+	nodes = new node[nX*nY]; // 500 / 20
 	// initialize nodes
 	for (int x = 10; x <= winX - 10; x += 20) {
 		for (int y = 10; y <= winY - 10; y += 20) {
 			it = coords_Convert(x, y, gridSize, nX);
-			nodes[it] = new node;
+			//nodes[it] = new node;
 			nodes[it].x = x;
 			
 			// cout << it<< "\t"; // DEBUG

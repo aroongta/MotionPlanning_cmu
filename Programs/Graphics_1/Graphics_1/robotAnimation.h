@@ -21,7 +21,7 @@
 
 using namespace std;
 
-class node
+struct node
 {    //Data structure for each node of the computational graph
 	double x, y; // coordinates of node
 	// node* neighbors[4]; // list of pointers for neighbours
@@ -50,7 +50,7 @@ public:
 	void Set_StartEnd(int winX, int winY); // allows user to set start and end points
 	void draw_obstacles();
 	//node **nodes=new node*[625]; // array of all nodes
-	vector <node*> nodes[625];
+	node *nodes=nullptr;
 	node* start = nullptr; // starting point
 	node* end = nullptr; // desired destination
 	void setObstacles();
