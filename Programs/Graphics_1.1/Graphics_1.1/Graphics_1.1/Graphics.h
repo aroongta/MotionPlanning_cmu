@@ -3,8 +3,8 @@
 //Motion Planning Simulator
 //
 // 24780: Engineering Computation Project
-//Created by: Ashish Roongta on 11/19/2018
-//  Copyright © 2018Ashish Roongta. All rights reserved.
+//Created by: Ashish Roongta and Bryan Zhao on 11/19/2018
+//  Copyright © 2018A shish Roongta. All rights reserved.
 //
 
 #include <stdio.h>
@@ -16,6 +16,7 @@
 #include "ysglfontdata.h"
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 //Data structure for each node of the computational graph
@@ -58,7 +59,7 @@ public:
 	void Draw_Circle(double cx, double cy, int rad); // draws circles
 	void Draw_Nodes(int winX, int winY); // draws nodes for the computational graph
 	void Draw_GridLines(int winX, int winY); // draws grid of computational graph
-	void setPath(double x, double y); // fills path coordinates in the member variable
+	void setPath(double x, double y,bool rev); // fills path coordinates in the member variable
 	void Draw_Path(); // draws path
 	void Draw_Path(node* end); // draws path based on node's coordinates
 	void Draw_StartEndObs(); // animates start and end points, obstacles if any
@@ -83,5 +84,5 @@ public:
 	void interpolatePath(vector<double> xCoords, vector<double> yCoords);
 	double  currentX; // current location for animation
 	double currentY;
-	void animateRobot(int i,vector<double> x, vector<double> y);	//Funciton to animate Robot
+	bool animateRobot(int &i,vector<double> x, vector<double> y);	//Funciton to animate Robot
 };

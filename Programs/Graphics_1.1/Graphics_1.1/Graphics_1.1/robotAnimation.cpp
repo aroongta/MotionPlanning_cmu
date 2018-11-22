@@ -112,18 +112,19 @@ void Robot::drawRobot()
 }
 
 // Sunction to animate robot
-void Robot::animateRobot(int i,vector<double> x,vector<double> y)
+bool Robot::animateRobot(int &i,vector<double> x,vector<double> y)
 {
 	drawRobot();
-	currentX = x[i];
-	currentY = y[i];
+	if (i == x.size() - 1)	//the robot has reached end goal
+		return false;
 	if (i < x.size() - 1)
 	{
-		currentX += (x[i + 1] - x[i]) / 1000;
-		currentY += (y[i + 1] - y[i]) / 1000;
-		if (currentX == x[i])
+		currentX += (x[i + 1] - x[i]) / 5.0;
+		currentY += (y[i + 1] - y[i]) / 5.0;
+		if (currentX==x[i+1] && currentY==y[i+1])
 			i++;
 	}
+	return true;
 }
 
 // generates a smoother path for the robot to follow during animation by interpolation

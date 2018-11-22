@@ -1,3 +1,7 @@
+//All functions for the Graphics class
+//Motion_Planning Simulator
+//Created by Ashish Roongta on 11/21/2018
+
 #include "Graphics.h"
 // to convert the coordinates to array indices
 int Graphics::coords_Convert(int cX, int cY, int gridSize, int nX)
@@ -54,10 +58,21 @@ void Graphics::Draw_GridLines(int winX, int winY)
 }
 
 // stores coordinates of computed path in the member variables
-void Graphics::setPath(double x, double y)
+void Graphics::setPath(double x, double y,bool rev)
 {
-	pathCoordsX.push_back(x);
-	pathCoordsY.push_back(y);
+	//set bool to true if you motion planning algorithm
+	//outputs path from goal to start
+	if (rev)
+	{
+		pathCoordsX.insert(pathCoordsX.begin(), x);
+		pathCoordsY.insert(pathCoordsY.begin(), y);
+
+	}
+	if (!rev)
+	{
+		pathCoordsX.push_back(x);
+		pathCoordsY.push_back(y);
+	}
 }
 
 // draws the computed path - output from algorithm
@@ -243,7 +258,7 @@ void Graphics::Draw_Path(node *end)
 		node *p = end; // starting point of "back-propagated path"
 		while (p != nullptr) // begin tracing back via parents
 		{
-			setPath(p->x, p->y);
+			setPath(p->x, p->y,1);
 			// cout << "Stored path, p->x and p->y:" << p->x << " and " << p->y << endl; // DEBUG
 			p = p->parent; // set next node to this node's parent (trace back)
 		}
