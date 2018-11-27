@@ -67,8 +67,8 @@ public:
 	void Draw_StartEndObs(); // animates start and end points, obstacles if any
 	void Set_StartEndObs(int winX, int winY); // allows user to set start and end points, obstacles if any
 	int coords_Convert(int cX, int cY, int gridSize, int nX); // to convert the coordinates to array indices
-	double heuristic(node* first, node* second); // heuristic function
-	bool computeAStar(int winX, int winY); // run a-star algorithm
+	double heuristic(node* first, node* second, bool isDijkstras); // heuristic function
+	bool computeAStar(int winX, int winY, bool isDijkstras); // run a-star algorithm
 	void dispMenu(int locX, int locY, int width, int height);
 	void displayText(const string message, int width, int height); // displays text on screen
 };

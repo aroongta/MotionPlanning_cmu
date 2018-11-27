@@ -1,34 +1,3 @@
-﻿  Graphics.cpp
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(90): warning C4018: '<': signed/unsigned mismatch
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(211): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(250): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(260): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(294): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(295): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(307): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(308): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(377): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(378): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  main_simulator.cpp
+﻿  main_simulator.cpp
 d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\main_simulator.cpp(14): warning C4101: 'mlp': unreferenced local variable
-  robotAnimation.cpp
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(51): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(63): warning C4244: 'argument': conversion from 'double' to 'GLint', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(65): warning C4244: 'argument': conversion from 'double' to 'GLint', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(67): warning C4244: 'argument': conversion from 'double' to 'GLint', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(69): warning C4244: 'argument': conversion from 'double' to 'GLint', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(71): warning C4244: 'argument': conversion from 'double' to 'GLint', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(73): warning C4244: 'argument': conversion from 'double' to 'GLint', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(75): warning C4244: 'argument': conversion from 'double' to 'GLint', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(77): warning C4244: 'argument': conversion from 'double' to 'GLint', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(99): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(100): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(101): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(102): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(106): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(107): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(108): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(109): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-d:\fall 18\engineering computation\motionplanning_cmu_24780\programs\graphics_1.1\graphics_1.1\graphics_1.1\robotanimation.cpp(120): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
   Graphics_1.1.vcxproj -> D:\Fall 18\Engineering Computation\MotionPlanning_cmu_24780\Programs\Graphics_1.1\Graphics_1.1\Debug\Graphics_1.1.exe

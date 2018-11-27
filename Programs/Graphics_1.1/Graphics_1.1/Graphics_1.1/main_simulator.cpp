@@ -21,35 +21,36 @@ int main(void)
 		w1.dispMenu(600, 100, 120, 20); // display animation button
 		w1.Set_StartEndObs(winX, winY); // allows user to manually set start and end nodes
 		w1.Draw_StartEndObs(); // draw start points, end points, obstacles
-		if (!w1.RobotMoving)
-		{
+		
 			switch (w1.mlp)
 			{
 			case 1:
 				w1.ClearPath();	//clearing the prior computed path
-				w1.computeAStar(winX, winY); // compute a-star search for path
+				cout << "A* algorithm selected"<<endl;
+				w1.computeAStar(winX, winY, false); // compute a-star search for path
 				break;
 			case 2:
-
 				w1.ClearPath();	//clearing the prior computed path
-				cout << "Dijkstra's algorithm" << endl;
+				cout << "Dijkstra's algorithm selcted" << endl;
 				//Call Dijkstra's computing function
+				w1.computeAStar(winX, winY, true);
 				break;
 			case 3:
 				w1.ClearPath();	//clearing the prior computed path
-				cout << "RRT selected" << endl;
+				cout << "RRT algorithm selected" << endl;
 				//Call RRT computing function
 				break;
 			case 4:
 				w1.ClearPath();	//clearing the prior computed path
-				cout << "D* selected" << endl;
+				cout << "D* algorithm selected" << endl;
 				//Call D* computing function
 				break;
 			default:
 				break;
 			}
-		}
-		w1.Draw_Path(w1.end); // highlight the shortest path
+		
+		//w1.Draw_Path(w1.end); // highlight the shortest path
+		w1.Draw_Path();
 		if (w1.RobotMoving)
 			w1.RobotMoving=quadCopter.animateRobot(i, w1.pathCoordsX, w1.pathCoordsY);
 		else

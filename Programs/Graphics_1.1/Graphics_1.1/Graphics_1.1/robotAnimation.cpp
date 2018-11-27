@@ -111,7 +111,7 @@ void Robot::drawRobot()
     theta+=4;
 }
 
-// Sunction to animate robot
+// function to animate robot
 bool Robot::animateRobot(int &i,vector<double> x,vector<double> y)
 {
 	drawRobot();

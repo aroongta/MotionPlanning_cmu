@@ -180,13 +180,18 @@ Graphics::Graphics(int winX, int winY)
 	cout << "w1.end's position: " << nodes[33].x << " " << nodes[33].y << endl; // DEBUG
 }
 
-double Graphics::heuristic(node* first, node* second)
+double Graphics::heuristic(node* first, node* second, bool isDijkstras)
 {
-	double distance = sqrt((first->x - second->x)*(first->x - second->x) + (first->y - second->y)*(first->y - second->y));
-	return distance; // euclidean distance, but change to manhattan distance if needed
+	if (!isDijkstras) {
+		double distance = sqrt((first->x - second->x)*(first->x - second->x) + (first->y - second->y)*(first->y - second->y));
+		return distance; // euclidean distance, but change to manhattan distance if needed
+	}
+	else {
+		return 0; // dijkstra's has no heuristic
+	}
 }
 // runs a star search algorithm and create links between start and end point with shortest path
-bool Graphics::computeAStar(int winX, int winY)
+bool Graphics::computeAStar(int winX, int winY, bool isDijkstras)
 {
 	int gridSize = 20; //size of the grid-cells
 	int nX = winX / gridSize, nY = winY / gridSize;
@@ -208,7 +213,7 @@ bool Graphics::computeAStar(int winX, int winY)
 	// initialize starting conditions
 	node *current = start; // should be nullptr at first
 	start->gMovementCost = 0.0; // f(n) is initialized to 0
-	start->fCost = heuristic(start, end);
+	start->fCost = heuristic(start, end, isDijkstras);
 
 	// add start node to open list -> includes nodes to be tested
 	// (newly discovered nodes get added to this list)
@@ -225,12 +230,12 @@ bool Graphics::computeAStar(int winX, int winY)
 
 		// front of openList is potentially the lowest distance node (after sorting), but
 		// list may also contain nodes that have already been visited, so remove these
-		while (openList.front()->isVisited && !openList.empty()) {
+		while (!openList.empty() && openList.front()->isVisited) {
 			// cout << "openList.front() has already been visited, popping off\n"; // DEBUG
 			openList.pop_front(); // remove it
 		}
 
-		if (current == end) { // if you have reached end node, just break out
+		if (current == end || openList.empty()) { // if you have reached end node, just break out
 			cout << "current is end...\n"; // DEBUG
 			break;
 		}
@@ -247,7 +252,7 @@ bool Graphics::computeAStar(int winX, int winY)
 				openList.push_back(nodeNeighbor);
 
 			// calculate the neighbor's potential lowest parent distance
-			float possiblyLower = current->gMovementCost + heuristic(current, nodeNeighbor);
+			float possiblyLower = current->gMovementCost + heuristic(current, nodeNeighbor, isDijkstras);
 
 			// if choosing path through this node is lower distance than current neighbor's,
 			// update the neighbor to use this node as the source/origin, and set distance scores as necessary
@@ -257,8 +262,19 @@ bool Graphics::computeAStar(int winX, int winY)
 				nodeNeighbor->gMovementCost = possiblyLower; // update local g cost
 
 				// update the neighbour's score since best path length to the neighbor being tested has changed
-				nodeNeighbor->fCost = nodeNeighbor->gMovementCost + heuristic(nodeNeighbor, end); // f(n) = g(n) + h(n)
+				nodeNeighbor->fCost = nodeNeighbor->gMovementCost + heuristic(nodeNeighbor, end, isDijkstras); // f(n) = g(n) + h(n)
 			}
+		}
+	}
+	//giving the computed path to the member variables
+	if (end != nullptr)
+	{
+		node *p = end; // starting point of "back-propagated path"
+		while (p != nullptr) // begin tracing back via parents
+		{
+			setPath(p->x, p->y, 1);
+			// cout << "Stored path, p->x and p->y:" << p->x << " and " << p->y << endl; // DEBUG
+			p = p->parent; // set next node to this node's parent (trace back)
 		}
 	}
 	return true; // end of a-star search
