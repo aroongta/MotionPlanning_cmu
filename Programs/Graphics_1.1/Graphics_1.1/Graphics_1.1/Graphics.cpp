@@ -117,6 +117,7 @@ void Graphics::Reset()
 // constructor of graphics object to initialize nodes
 Graphics::Graphics(int winX, int winY)
 {
+	mlp = 0;
 	int gridSize = 20; //size of the grid-cells
 	int nX = winX / gridSize, nY = winY / gridSize;
 	// cout << nX * nY << '\n'; // DEBUG
@@ -156,6 +157,19 @@ Graphics::Graphics(int winX, int winY)
 			if (x <= winX - 30) {
 				nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x + gridSize, y, gridSize, nX)]); // east neighbors
 			}
+			// also create diagonal connections
+			/*if (x >= 30 && y >= 30) {
+				nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x - gridSize, y - gridSize, gridSize, nX)]); // northwest neighbors
+			}
+			if (x <= winX - 30 && y <= winY - 30) {
+				nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x + gridSize, y + gridSize, gridSize, nX)]); // southeast neighbors
+			}
+			if (x >= 30 && y <= winY - 30) {
+				nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x - gridSize, y + gridSize, gridSize, nX)]); // southwest neighbors
+			}
+			if (x <= winX - 30 && y >= 30) {
+				nodes[it].vecNeighbors.push_back(&nodes[coords_Convert(x + gridSize, y - gridSize, gridSize, nX)]); // southeast neighbors
+			}*/
 		}
 	}
 
@@ -315,9 +329,8 @@ void Graphics::Draw_StartEndObs() // draws start and end points, obstacles if an
 		}
 	}
 }
-
-// added Set_StartEndObs(), allows user to set start and end points manually
-void Graphics::Set_StartEndObs(int winX, int winY)
+//function to clear the path member variables
+void Graphics::ClearPath()
 {
 	// clear computed path coordinates
 	while (!pathCoordsX.empty()) {
@@ -327,6 +340,12 @@ void Graphics::Set_StartEndObs(int winX, int winY)
 		pathCoordsY.pop_back();
 	}
 
+}
+// added Set_StartEndObs(), allows user to set start and end points manually
+void Graphics::Set_StartEndObs(int winX, int winY)
+{
+	// clear computed path coordinates
+	ClearPath();
 	auto key = FsInkey();
 	int gridSize = 20;
 	int mouseEvent, leftButton, middleButton, rightButton, locX, locY; // mouse movement info
@@ -359,28 +378,71 @@ void Graphics::dispMenu(int x, int y, int width, int height)
 	int ySpacing = height / 2.0;
 	glColor3ub(0, 255, 255);
 	glBegin(GL_QUADS);
+	int i = 4*ySpacing;
+	//For animate robot button
 	glVertex2d(x - xSpacing, y - ySpacing);
 	glVertex2d(x + xSpacing, y - ySpacing);
 	glVertex2d(x + xSpacing, y + ySpacing);
 	glVertex2d(x - xSpacing, y + ySpacing);
+	//For A* motion planning algorithm
+	glVertex2d(x - xSpacing, y - ySpacing+i);
+	glVertex2d(x + xSpacing, y - ySpacing+i);
+	glVertex2d(x + xSpacing, y + ySpacing+i);
+	glVertex2d(x - xSpacing, y + ySpacing+i);
+
+	//For Dijkstra's MLP button
+	glVertex2d(x - xSpacing, y - ySpacing + 2 * i);
+	glVertex2d(x + xSpacing, y - ySpacing + 2 * i);
+	glVertex2d(x + xSpacing, y + ySpacing + 2 * i);
+	glVertex2d(x - xSpacing, y + ySpacing + 2 * i);
+
+	//For RRT MLP button
+	glVertex2d(x - xSpacing, y - ySpacing + 3 * i);
+	glVertex2d(x + xSpacing, y - ySpacing + 3 * i);
+	glVertex2d(x + xSpacing, y + ySpacing + 3 * i);
+	glVertex2d(x - xSpacing, y + ySpacing + 3 * i);
+
+	//For D* MLP button
+	glVertex2d(x - xSpacing, y - ySpacing + 4 * i);
+	glVertex2d(x + xSpacing, y - ySpacing + 4 * i);
+	glVertex2d(x + xSpacing, y + ySpacing + 4 * i);
+	glVertex2d(x - xSpacing, y + ySpacing + 4 * i);
+
 	glEnd();
 
 	displayText("Animate robot.", x - 50, y + 5);
+	displayText("A* Algorithm", x - 50, y + 5+ i);
+	displayText("Dijkstra's.", x - 50, y + 5+ 2*i);
+	displayText("RRT algoritm.", x - 50, y + 5+3*i);
+	displayText("D* Lite", x - 50, y + 5 + 4*i);
 
 	// now, poll for mouse coordinates
 	int mouseEvent, leftButton, middleButton, rightButton, locX, locY; // mouse movement info
 	mouseEvent = FsGetMouseEvent(leftButton, middleButton, rightButton, locX, locY);
+	//0:animate robot
+	//1:A* MLP
+	//2:Dijkstra's
+	//3:RRT
+	//4:D* Lite
 
-	if ((x - xSpacing <= locX && locX <= x + xSpacing) && (y - ySpacing <= locY && locY <= y + ySpacing)) {
-		// set animation movement
-		if (leftButton) {
-			RobotMoving = true;
-			
-			cout << "animate robot has been clicked!";
-		}
-		if (mouseEvent == FSMOUSEEVENT_LBUTTONUP) {
-			// isMoving = false;
-			// implementation here
+	for (int u = 0; u <= 4; u++)
+	{
+		if ((x - xSpacing <= locX && locX <= x + xSpacing) && (y - ySpacing+u*i <= locY && locY <= y + ySpacing+u*i)) {
+			// set animation movement
+			if (leftButton)
+			{
+				if (u == 0)
+				{
+					RobotMoving = true;
+					cout << "animate robot has been clicked!";
+				}
+				else
+				{
+					//cout << "Clicked:" << u << endl;;
+					mlp = u;
+					break;
+				}
+			}
 		}
 	}
 }

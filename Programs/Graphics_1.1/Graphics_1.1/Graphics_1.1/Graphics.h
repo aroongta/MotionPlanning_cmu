@@ -47,6 +47,7 @@ class Graphics
 private:
 	// removed vector of pathCoords, placed into public (for implementing animation)
 public:
+	int mlp;	//to stor the indicator for motion planning algorithm chosen
 	vector<double> pathCoordsX;    //list of x coordinates for the optimal path
 	vector<double> pathCoordsY;    //list of y coordinates for the optimal path
 	node* nodes = nullptr; // array of all nodes
@@ -56,6 +57,7 @@ public:
 	Graphics() {};	//Default constructor
 	Graphics(int winX, int winY); // constructor
 	void Reset();	//Function to reset all values
+	void ClearPath();	//Fucntion to clear the path
 	void Draw_Circle(double cx, double cy, int rad); // draws circles
 	void Draw_Nodes(int winX, int winY); // draws nodes for the computational graph
 	void Draw_GridLines(int winX, int winY); // draws grid of computational graph
