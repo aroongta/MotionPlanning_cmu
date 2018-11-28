@@ -1,0 +1,15 @@
+﻿  Graphics.cpp
+d:\downloads\motionplanning_cmu-master\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(90): warning C4018: '<': signed/unsigned mismatch
+d:\downloads\motionplanning_cmu-master\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(216): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\downloads\motionplanning_cmu-master\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(255): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\downloads\motionplanning_cmu-master\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(265): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\downloads\motionplanning_cmu-master\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(310): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\downloads\motionplanning_cmu-master\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(311): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\downloads\motionplanning_cmu-master\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(323): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\downloads\motionplanning_cmu-master\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(324): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\downloads\motionplanning_cmu-master\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(393): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+d:\downloads\motionplanning_cmu-master\programs\graphics_1.1\graphics_1.1\graphics_1.1\graphics.cpp(394): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  main_simulator.cpp
+d:\downloads\motionplanning_cmu-master\programs\graphics_1.1\graphics_1.1\graphics_1.1\main_simulator.cpp(14): warning C4101: 'mlp': unreferenced local variable
+  Generating Code...
+  Graphics_1.1.vcxproj -> D:\Downloads\MotionPlanning_cmu-master\Programs\Graphics_1.1\Graphics_1.1\Debug\Graphics_1.1.exe
